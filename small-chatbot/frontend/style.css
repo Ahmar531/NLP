@@ -1,0 +1,267 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    background: #343541;
+    color: #ececf1;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background: #202123;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #444654;
+}
+
+.new-chat-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #444654;
+    background: transparent;
+    color: #ececf1;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.new-chat-btn:hover {
+    background: #2a2b32;
+}
+
+.plus-icon {
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.chat-history {
+    margin-top: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.history-section h3 {
+    font-size: 12px;
+    color: #8e8ea0;
+    padding: 8px 12px;
+    font-weight: 500;
+}
+
+.history-item {
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #ececf1;
+    transition: background 0.2s;
+    margin-bottom: 4px;
+}
+
+.history-item:hover {
+    background: #2a2b32;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #343541;
+}
+
+.chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #444654;
+    text-align: center;
+}
+
+.chat-header h2 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ececf1;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-message {
+    text-align: center;
+    margin: auto;
+}
+
+.welcome-message h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #ececf1;
+}
+
+.message-wrapper {
+    display: flex;
+    padding: 24px 0;
+    gap: 24px;
+    border-bottom: 1px solid #444654;
+}
+
+.message-wrapper.user {
+    background: #343541;
+}
+
+.message-wrapper.assistant {
+    background: #444654;
+    margin: 0 -20px;
+    padding: 24px 20px;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.avatar.user {
+    background: #5436da;
+    color: white;
+}
+
+.avatar.assistant {
+    background: #19c37d;
+    color: white;
+}
+
+.message-content {
+    flex: 1;
+    line-height: 1.7;
+    font-size: 16px;
+    color: #ececf1;
+}
+
+.typing-indicator {
+    display: inline-flex;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #8e8ea0;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 60%, 100% {
+        opacity: 0.3;
+    }
+    30% {
+        opacity: 1;
+    }
+}
+
+.input-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    background: #40414f;
+    border-radius: 12px;
+    padding: 12px;
+    gap: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+#messageInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ececf1;
+    font-size: 16px;
+    resize: none;
+    max-height: 200px;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+#messageInput::placeholder {
+    color: #8e8ea0;
+}
+
+#sendButton {
+    width: 32px;
+    height: 32px;
+    background: #19c37d;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+#sendButton:hover:not(:disabled) {
+    background: #1a9f6a;
+}
+
+#sendButton:disabled {
+    background: #40414f;
+    cursor: not-allowed;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #565869;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6e6f80;
+}
