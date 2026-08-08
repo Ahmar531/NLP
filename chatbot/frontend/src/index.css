@@ -1,0 +1,127 @@
+/* ─────────────────────────────────────────────────────────────
+   index.css
+   ─────────────────────────────────────────────────────────────
+   Why this file exists:
+     This is the global stylesheet for the whole React app.
+     It sets the background, fonts, and some helper classes that
+     every component can use.
+
+   What it does:
+     1. Loads Tailwind CSS utilities so we can use class names in JSX.
+     2. Sets a beautiful gradient background for the whole page.
+     3. Imports the Inter font from Google Fonts for clean typography.
+     4. Adds a few custom CSS classes for the chat bubbles and scrollbar.
+───────────────────────────────────────────────────────────── */
+
+/* Step 1: Import the Inter font from Google Fonts */
+/* @import must come before @tailwind directives — this is a CSS rule */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Step 2: Load Tailwind's base reset, component styles, and utility classes */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Global Reset ─────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base Page Styles ─────────────────────────────── */
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* Deep, rich dark gradient background */
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  color: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* The root div fills the whole page so the app can center itself */
+#root {
+  height: 100%;
+}
+
+/* ─── Scrollbar Styling ────────────────────────────── */
+/* Makes the scrollbar inside the chat window look clean and slim */
+.chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* ─── Typing Dots Animation ────────────────────────── */
+/* The three bouncing dots inside the Loading component */
+@keyframes typing-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%            { transform: translateY(-6px); opacity: 1; }
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #818cf8;
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* ─── Message Fade-in ──────────────────────────────── */
+/* Each new message slides in smoothly from the bottom */
+@keyframes message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: message-appear 0.3s ease-out forwards;
+}
+
+/* ─── Glow Effect for Send Button ──────────────────── */
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 40px rgba(99, 102, 241, 0.2);
+}
+
+/* ─── Glass Card ────────────────────────────────────── */
+/* A frosted-glass look used for the main chat container */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ─── Input Focus Glow ──────────────────────────────── */
+.input-glow:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4), 0 0 15px rgba(99, 102, 241, 0.15);
+}
