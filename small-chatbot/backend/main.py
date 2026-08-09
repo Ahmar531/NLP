@@ -5,6 +5,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import requests
 import os
+import uvicorn
 
 app = FastAPI()
 
@@ -39,3 +40,7 @@ def chat(request: ChatRequest):
 @app.get("/")
 async def read_index():
     return FileResponse(os.path.join(frontend_path, "index.html"))
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
