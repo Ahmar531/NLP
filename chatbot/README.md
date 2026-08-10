@@ -90,6 +90,40 @@ User types a message and presses Enter
 
 ---
 
+## 🔧 Code — How It Works (English + Urdu)
+
+Below is a short, file-focused explanation of what each part of the code does. — Neeche mukhtasar taur par bataya gaya hai ke har file kya karti hai.
+
+- **Backend — `backend/app.py`:**
+       - English: Defines the FastAPI app and routes (e.g. `POST /chat`, `/health`). The `/chat` route validates input, calls a helper (usually `get_ollama_reply`) to send the user's message to Ollama, then returns the model reply.
+       - Urdu: FastAPI server aur endpoints (jaise `/chat`, `/health`). `/chat` request ko validate karke Ollama se reply leti hai aur browser ko bhejti hai.
+
+- **Models — `backend/models.py`:**
+       - English: Pydantic models used to validate request and response JSON shapes (e.g. `ChatRequest`, `ChatResponse`).
+       - Urdu: Pydantic se JSON format validate hota hai (user message / AI response ke shapes).
+
+- **Environment — `backend/.env`:**
+       - English: Holds `MODEL_NAME`, `OLLAMA_HOST`, and `FRONTEND_ORIGIN`. `app.py` reads these to call the correct Ollama model and to set CORS.
+       - Urdu: Model name aur server addresses yahan rakhe hain; backend inko istemal karta hai.
+
+- **Frontend API — `frontend/src/api.js`:**
+       - English: Exports a function (e.g. `sendChatMessage`) that POSTs the user's message to the backend and returns the AI reply.
+       - Urdu: Browser se backend ko POST request bhejne wala code.
+
+- **Frontend App — `frontend/src/App.jsx`:**
+       - English: Manages chat state (`messages`, `loading`). On send: adds the user message to state, sets `loading=true`, calls `sendChatMessage`, then appends the AI reply and clears `loading`.
+       - Urdu: React state aur message flow yahin manage hota hai.
+
+- **Components — `frontend/src/components/*`:**
+       - `ChatInput.jsx`: handles text input and send/enter.
+       - `ChatWindow.jsx`: renders message list and auto-scrolls to latest.
+       - `Message.jsx`: single chat bubble UI.
+       - `Loading.jsx`: small loader while response is pending.
+       - Urdu: Ye components mil kar user interface chalate hain — input, messages, aur loader.
+
+If you want, I can also add small code snippets showing the exact function names (e.g. `get_ollama_reply`, `sendChatMessage`) from your files. Would you like me to include those snippets in the README?
+
+
 ## ⚙️ Setup Instructions
 
 Follow these steps **in order**.
