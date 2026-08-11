@@ -1,0 +1,7 @@
+langchain
+langgraph
+langchain-groq
+qdrant-client
+langchain-community
+fastembed
+python-dotenv
