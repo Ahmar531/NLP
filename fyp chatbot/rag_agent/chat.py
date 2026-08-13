@@ -338,14 +338,12 @@ Current user question:
 
 Instructions:
 
-- Use the memories when they are relevant.
-- Use short-term memory for current conversation context.
-- Do not store normal conversation in long-term memory.
-- Long-term memory is only for stable important user facts.
-- Do not invent personal information.
-- If the user asks about their name, use the stored name.
-- Answer normal questions normally.
-- If the question is about company policies, use the PDF RAG tool.
+- Follow the LawBridge Assistant system prompt exactly.
+- Detect the response language from the user's question only.
+- Use memories only for conversation context, not as legal authority.
+- Use the PDF search tool for Punjab/Pakistan law context.
+- Mention law names, sections, articles, rules, or cases only when supported by retrieved context.
+- Use the answer-style, missing-information, and serious-matter rules from the system prompt.
 """
 
 

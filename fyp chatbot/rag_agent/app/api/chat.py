@@ -115,17 +115,13 @@ User question:
 
 Instructions:
 
-- Use long-term memories when relevant.
-- Use short-term memory for current conversation context.
-- Do not store normal conversation in long-term memory.
-- Long-term memory is only for stable important user facts.
-- Do not invent personal information.
-- Answer normal questions normally.
-- If the question is related to company PDF documents,
-  use the PDF search tool.
-- If information is not available in the PDF documents,
-  clearly say that it was not found.
-"""
+- Follow the LawBridge Assistant system prompt exactly.
+- Detect the response language from the user's question only.
+- Use memories only for conversation context, not as legal authority.
+- Use the PDF search tool for Punjab/Pakistan law context.
+- Mention law names, sections, articles, rules, or cases only when supported by retrieved context.
+- Use the answer-style, missing-information, and serious-matter rules from the system prompt.
+""" 
 
 
     # --------------------------------------------------------
