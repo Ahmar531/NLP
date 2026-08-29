@@ -10,12 +10,23 @@ from ai_companion.settings import settings
 
 
 def get_chat_model(temperature: float = 0.7):
-    return ChatGroq(
+    primary = ChatGroq(
         api_key=settings.GROQ_API_KEY,
         model_name=settings.TEXT_MODEL_NAME,
         temperature=temperature,
-        max_retries=3,  # Handle Groq 429 rate limits with automatic backoff
+        max_tokens=350,
+        max_retries=2,
     )
+    # Automatic fallback model if primary hits 429 rate limit
+    fallback_model = "openai/gpt-oss-20b" if settings.TEXT_MODEL_NAME == "qwen/qwen3.8-27b" else "qwen/qwen3.8-27b"
+    secondary = ChatGroq(
+        api_key=settings.GROQ_API_KEY,
+        model_name=fallback_model,
+        temperature=temperature,
+        max_tokens=350,
+        max_retries=2,
+    )
+    return primary.with_fallbacks([secondary])
 
 
 def get_text_to_speech_module():

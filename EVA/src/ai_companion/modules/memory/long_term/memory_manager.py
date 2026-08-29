@@ -46,12 +46,21 @@ class MemoryManager:
         self.vector_store = get_vector_store()
         self.logger = logger
 
-        self.llm = ChatGroq(
+        primary_llm = ChatGroq(
             model=settings.SMALL_TEXT_MODEL_NAME,
             api_key=settings.GROQ_API_KEY,
             temperature=0.1,
+            max_tokens=150,
             max_retries=2,
         )
+        fallback_llm = ChatGroq(
+            model="qwen/qwen3.8-27b",
+            api_key=settings.GROQ_API_KEY,
+            temperature=0.1,
+            max_tokens=150,
+            max_retries=2,
+        )
+        self.llm = primary_llm.with_fallbacks([fallback_llm])
 
     async def _analyze_memory(
         self,

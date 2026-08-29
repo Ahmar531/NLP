@@ -875,11 +875,26 @@ async def whatsapp_webhook(
         if not isinstance(message, dict):
             message = {}
 
-        message_id = key.get("id") or message_data.get("id") or ""
-        from_me = bool(key.get("fromMe", False))
-        remote_jid = key.get("remoteJid", "")
-        remote_jid_alt = key.get("remoteJidAlt", "")
-        message_timestamp = message_data.get("messageTimestamp")
+        message_id = key.get("id") or message_data.get("id") or data.get("id") or ""
+        from_me = bool(key.get("fromMe", False)) or bool(message_data.get("fromMe", False))
+        remote_jid = (
+            key.get("remoteJid")
+            or message_data.get("remoteJid")
+            or data.get("remoteJid")
+            or data.get("sender")
+            or ""
+        )
+        remote_jid_alt = (
+            key.get("remoteJidAlt")
+            or message_data.get("remoteJidAlt")
+            or data.get("remoteJidAlt")
+            or ""
+        )
+        message_timestamp = (
+            message_data.get("messageTimestamp")
+            or key.get("messageTimestamp")
+            or data.get("timestamp")
+        )
 
         # ----------------------------------------------------
         # STRICT SAFETY VALIDATION (STALENESS, NON-MESSAGES, DEDUP)
@@ -1010,6 +1025,16 @@ async def whatsapp_webhook(
             elif message.get("documentWithCaptionMessage"):
                 doc = message.get("documentWithCaptionMessage", {}).get("message", {}).get("documentMessage", {})
                 text = str(doc.get("caption", ""))
+
+            # Direct body / text fallbacks
+            elif message_data.get("body"):
+                text = str(message_data.get("body", ""))
+            elif message_data.get("text"):
+                text = str(message_data.get("text", ""))
+            elif message_data.get("messageText"):
+                text = str(message_data.get("messageText", ""))
+            elif message_data.get("conversation"):
+                text = str(message_data.get("conversation", ""))
 
             # ----------------------------------------------------
             # EMPTY MESSAGE

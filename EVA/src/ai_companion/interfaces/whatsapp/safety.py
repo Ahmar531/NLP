@@ -153,7 +153,7 @@ def validate_incoming_event(
     message_timestamp: Optional[float] = None,
     from_me: bool = False,
     server_start_time: float = SERVER_START_TIME,
-    max_age_seconds: float = 120.0,
+    max_age_seconds: float = 3600.0,
 ) -> Tuple[bool, str]:
     """
     Strict validation of incoming WhatsApp webhook event before processing.
@@ -163,20 +163,22 @@ def validate_incoming_event(
     2. Drops non-message events (presence, connection, status, etc.).
     3. Drops self-messages (fromMe == True).
     4. Drops group chats and status broadcasts.
-    5. Drops stale messages (created before server startup or older than max_age_seconds).
-    6. Drops duplicate message IDs (idempotency).
-    7. Requires non-empty message_id and sender_number.
+    5. Drops duplicate message IDs (idempotency).
+    6. Requires non-empty message_id and sender_number.
 
     Returns:
         (is_valid: bool, reason: str)
     """
-    norm_event = str(event_type or "").upper().replace(".", "_")
+    norm_event = str(event_type or "").upper().replace(".", "_").replace("-", "_")
 
     # 1. Event type filtering
     if norm_event in IGNORED_EVENTS:
         return False, f"Ignored non-message event type: {event_type}"
 
-    if norm_event and norm_event not in {"MESSAGES_UPSERT", "MESSAGE_UPSERT", "MESSAGES", "MESSAGE"}:
+    if norm_event and not any(
+        kw in norm_event
+        for kw in {"MESSAGE", "MESSAGES", "UPSERT", "SEND_MESSAGE"}
+    ):
         return False, f"Unsupported event type: {event_type}"
 
     # 2. Self message check
@@ -194,20 +196,14 @@ def validate_incoming_event(
     if is_group_or_broadcast(sender_number):
         return False, f"Ignored group/broadcast message: {sender_number}"
 
-    # 5. Timestamp staleness check
+    # 5. Timestamp staleness check (prevent dropping due to server reload clock-skew)
     if message_timestamp is not None:
         try:
             ts = float(message_timestamp)
-            # In case timestamp is in milliseconds
             if ts > 1e11:
                 ts = ts / 1000.0
 
             now = time.time()
-            # If message was created before this server instance started (allowing 10s clock skew)
-            if ts < (server_start_time - 10.0):
-                return False, f"Stale message created before server startup (ts={ts}, start={server_start_time})"
-
-            # If message is older than max allowed age (e.g. 120 seconds)
             if (now - ts) > max_age_seconds:
                 return False, f"Stale message older than {max_age_seconds}s (age={now - ts:.1f}s)"
         except (ValueError, TypeError) as err:
